@@ -55,8 +55,12 @@ R programlama dili kullanılarak makine öğrenmesi uygulamak mümkündür. Bunu
 
 Kullanacağımız R kütüphanelerini öncelikle yüklememiz gerekmektedir.
 
+```
 library(caret)
 library(mlbench)
 library(randomForest)
+```
+
+
 
 
