@@ -53,4 +53,10 @@ Biz bu çalışmadan genomik çalışmalarda genellikle tercih edilen sınıflan
 R programlama dili kullanılarak makine öğrenmesi uygulamak mümkündür. Bunu uygulamak için caret, mlbench, randomforest gibi bir çok kütüphane bulunmaktadır.
 
 
+Kullanacağımız R kütüphanelerini öncelikle yüklememiz gerekmektedir.
+
+library(caret)
+library(mlbench)
+library(randomForest)
+
 
