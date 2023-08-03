@@ -5,30 +5,48 @@
 # Makine Öğrenmesi Uygulaması
 
 1. Probleme hazırlık
+
 a) Kütüphaneleri yükleme
+
 b) Veriseti yükleme
+
 c) Verisetini doğrulama kümelerine bölme
 
-2. Data özeti
+3. Data özeti
+
 a) Tanımlayıcı istatistiklere bakma
+
 b) Data görüntüleme
 
-3. Datayı hazırlama
+4. Datayı hazırlama
+
 a) Data temizliği
+
 b) Özellik seçimi
+
 c) Data dönüştürme
 
-4. Algoritmaları değerlendirme
-a) Test denemeleri değerlendirme metrikleri b) Algoritma kontrolü
+5. Algoritmaları değerlendirme
+
+a) Test denemeleri değerlendirme metrikleri 
+
+b) Algoritma kontrolü
+
 c) Algoritmaları karşılaştırma
 
-5. Doğruluğu (Accuracy) geliştirme
+6. Doğruluğu (Accuracy) geliştirme
+
 a) Algoritmayı düzenleme
+
 b) Toparlama
 
-6. Modeli sonuçlandırma
+7. Modeli sonuçlandırma
+
 a) Doğrulama veri setiyle ilgili tahminler
-b) Eğitim veri setinin tamamında bağımsız model oluşturun c) Sonraki kullanımlar için modeli kaydetme
+
+b) Eğitim veri setinin tamamında bağımsız model oluşturun 
+
+c) Sonraki kullanımlar için modeli kaydetme
 
 Biz bu çalışmadan genomik çalışmalarda genellikle tercih edilen sınıflandırma algoritmalarını test edeceğiz. Kullanacağımız veri seti de bu amaç için uygundur.
 
