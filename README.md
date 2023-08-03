@@ -2,35 +2,37 @@
 
 (Bu eğitim Genombilim Eğitiminde, 2023 kullanılmak üzere hazırlanmıştır.)
 
-# Machine Learning Usage Steps
+# Makine Öğrenmesi Uygulaması
 
-_1. Preparation for the problem_
-a) Installing libraries
-b) Dataset loading
-c) Splitting the dataset into validation sets
+1. Probleme hazırlık
+a) Kütüphaneleri yükleme
+b) Veriseti yükleme
+c) Verisetini doğrulama kümelerine bölme
 
-_2. Data summary_
-a) Looking at descriptive statistics
-b) Data display
+2. Data özeti
+a) Tanımlayıcı istatistiklere bakma
+b) Data görüntüleme
 
-_3. Preparing the data_
-a) Data cleaning
-b) Feature selection
-c) Data conversion
+3. Datayı hazırlama
+a) Data temizliği
+b) Özellik seçimi
+c) Data dönüştürme
 
-_4. Evaluating algorithms_
-a) Test trials evaluation metrics
-b) Algorithm check
-c) Comparing algorithms
+4. Algoritmaları değerlendirme
+a) Test denemeleri değerlendirme metrikleri b) Algoritma kontrolü
+c) Algoritmaları karşılaştırma
 
-_5. Improving Accuracy_
-a) Editing the algorithm and tidying up
+5. Doğruluğu (Accuracy) geliştirme
+a) Algoritmayı düzenleme
+b) Toparlama
 
-_6. Finalize the model_
-a) Predictions about the validation dataset
-b) Create standalone model across the entire training dataset c) Save the model for future uses
+6. Modeli sonuçlandırma
+a) Doğrulama veri setiyle ilgili tahminler
+b) Eğitim veri setinin tamamında bağımsız model oluşturun c) Sonraki kullanımlar için modeli kaydetme
 
+Biz bu çalışmadan genomik çalışmalarda genellikle tercih edilen sınıflandırma algoritmalarını test edeceğiz. Kullanacağımız veri seti de bu amaç için uygundur.
 
+R programlama dili kullanılarak makine öğrenmesi uygulamak mümkündür. Bunu uygulamak için caret, mlbench, randomforest gibi bir çok kütüphane bulunmaktadır.
 
 
 
