@@ -1,6 +1,6 @@
-# Machine Learning used in Genetics 
+# Genombilimde Makine Öğrenmesi
 
-(This tutorial were used in Genombilim event, 2023.)
+(Bu eğitim Genombilim Eğitiminde, 2023 kullanılmak üzere hazırlanmıştır.)
 
 # Machine Learning Usage Steps
 
