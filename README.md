@@ -219,7 +219,7 @@ predictions_glm <- predict(fit.glm, PimaIndiansDiabetes[,1:8])
 confusionMatrix(predictions_glm, PimaIndiansDiabetes$diabetes)
 ```
 
-###5. Doğruluğu (Accuracy) geliştirme
+### 5. Doğruluğu (Accuracy) geliştirme
    
 Elde ettiğimiz sonuçlara bakılırsa en iyi doğruluğu veren Rastgele Orman (RF) algoritması ile eğitimimizi geliştirmeye devam edebiliriz.
 
@@ -266,7 +266,7 @@ results <- resamples(modellist) summary(results)
 dotplot(results)
 ```
 
-###6. Modeli sonuçlandırma
+### 6. Modeli sonuçlandırma
    
 Rastgele orman algoritmasını kullanarak en iyi parametreleri belirledik.
 
