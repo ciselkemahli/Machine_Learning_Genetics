@@ -220,6 +220,7 @@ confusionMatrix(predictions_glm, PimaIndiansDiabetes$diabetes)
 ```
 
 
+
 ```ruby
 #Eğitme planı hazırlamak
 control <- trainControl(method="repeatedcv", number=10, repeats=3)
