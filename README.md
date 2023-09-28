@@ -219,12 +219,91 @@ predictions_glm <- predict(fit.glm, PimaIndiansDiabetes[,1:8])
 confusionMatrix(predictions_glm, PimaIndiansDiabetes$diabetes)
 ```
 
+###5. Doğruluğu (Accuracy) geliştirme
+   
+Elde ettiğimiz sonuçlara bakılırsa en iyi doğruluğu veren Rastgele Orman (RF) algoritması ile eğitimimizi geliştirmeye devam edebiliriz.
 
+Bir algoritmayı ayarlarken, parametrelerin oluşturduğunuz model üzerindeki etkisini bilmek için algoritmanızı iyi anlamanız önemlidir.
+
+Rastgele orman modelimiz üzerinde aşağıdaki etkileri olan mtry ve ntree parametreleri olmak üzere iki parametreyi ayarlamaya bağlı kalacağız. Başka pek çok parametre var, ancak bu iki parametre belki de nihai doğruluğunuz üzerinde en büyük etkiye sahip olanlardır.
+
+R’deki randomForest() işlevi için doğrudan yardım sayfasından:
+
+mtry: Her bölmede aday olarak rastgele örneklenen değişken sayısı. ntree: Büyüyecek ağaç sayısı.
 
 ```ruby
-#Eğitme planı hazırlamak
-control <- trainControl(method="repeatedcv", number=10, repeats=3)
+# Veri seti test ve train olmak üzere rastgele doğrulama kümelerine böleceğiz.
+set.seed(7)
+split <- createDataPartition(y=PimaIndiansDiabetes$diabetes, p=0.66, list=FALSE)
+trainPima <- PimaIndiansDiabetes[split,] testPima <- PimaIndiansDiabetes[-split,]
+
+# mtry değerini 2 ile 5 arasında deneyeceğiz.
+set.seed(7)
+metric <- "Accuracy"
+# tunegrid <- expand.grid(.mtry=c(sqrt(ncol(trainPima)))) tunegrid <- expand.grid(.mtry=c(2:5))
+rf_gridsearch <- train(diabetes~., data=trainPima, method="rf", metric=metric, tuneGrid=tunegrid, trControl=control)
+bestmtry = rf_gridsearch$bestTune
+
+print(rf_gridsearch)
+
+plot(rf_gridsearch)
+
+print(bestmtry$mtry)
+
+# mtry değerini belirledik. ntree değerini de 1000, 1500, 2000, 2500 değerleri için deneyeceğiz.
+tunegrid <- expand.grid(.mtry=bestmtry$mtry)
+modellist <- list()
+for (ntree in c(1000, 1500, 2000, 2500)) {
+set.seed(7)
+fit <- train(diabetes~., data=trainPima, method="rf", metric=metric,
+tuneGrid=tunegrid, trControl=control, ntree=ntree) key <- toString(ntree)
+modellist[[key]] <- fit
+}
+
+# Sonuçları karşılaştırma
+results <- resamples(modellist) summary(results)
+
+dotplot(results)
 ```
+
+###6. Modeli sonuçlandırma
+   
+Rastgele orman algoritmasını kullanarak en iyi parametreleri belirledik.
+
+```ruby
+# En iyi parametreler:
+chosenNTree <- 2500 chosenmtry <- bestmtry$mtry
+
+rf_pima <- randomForest(trainPima[,1:7], y=trainPima$diabetes, data=trainPima, proximity=TRUE, ntree=chosenNTree, nodesize=5, importance=TRUE, mtry=chosenmtry)
+
+print(rf_pima)
+```
+
+Ortalama azalma doğruluğu (Mean decrease accuracy), her parametrenin olmadan modelin performansının ölçüsüdür. Daha yüksek bir değer, grubu (diyabetik ve sağlıklı) tahmin etmede o parametrenin önemini gösterir. Bu parametrenin çıkarılması, modelin tahmindeki doğruluğunu kaybetmesine neden olur.
+
+```ruby
+importance(rf_pima, type=1)
+```
+
+Görüldüğü üzere glikoz değeri diyabet hastası olma durumunun sınıflandırılmasında en yüksek öneme sahip parametre olarak bulunmuştur, ki bu da bekleyebildiğimiz bir sonuç olacaktır.
+
+```ruby
+predictions <- predict(rf_pima, newdata = testPima[,1:8])
+confusionMatrix(predictions, testPima$diabetes)
+
+table(predictions, testPima$diabetes)
+```
+
+Bu analizler örneklem, deneme sayılarının artırılması ile daha güvenilir sonuçlar verecektir. Bunun için yüksek işlemci gücüne sahip TRUBA gibi serverlar kullanılarak makine öğrenmesi analizleri gerçekleştirilebilir.
+
+Sonuç olarak modelin kullanmadığı bir test veri seti verdiğimizde en iyi parametreleri seçerek oluşturduğumuz modelimiz bize bireyleri diyabet olma durumlarını söyleyecektir.
+
+Kendi çalışmalarınızda kullanacağınız verilerinize, sorularınıza göre algoritmalar, kullandığınız parametreler değişecektir. En iyisini bulmak ve en iyi makine öğrenme yöntemini belirlemek için denemeler yapmak en önemli aşamadır.
+
+Umarım bu çalışma size genomik vb. çalışmalarda makine öğrenmesi analizlerinin uygulanabilir olduğunu göstermiştir. Korkmayın, bir sürü hata alsanız da denemeye devam edin.
+
+Bana dilediğiniz zaman mckemahli@gmail.com mail adresinden ulaşabilirsiniz. Kodlarınızla kalın :)
+
 
 ## Referanslar
 
