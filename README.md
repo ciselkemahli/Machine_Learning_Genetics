@@ -144,6 +144,86 @@ Aslında burada ne kadar çok tekrar yapabilirsek elde ettiğimiz değerlendirme
 
 Şimdi farklı modelleri deneyebiliriz.
 
+```ruby
+# SVM
+set.seed(7)
+fit.svm <- train(diabetes~., data=PimaIndiansDiabetes, method="svmRadial", metric="Accuracy", trControl=control)
+print(fit.svm)
+
+# LDA
+set.seed(7)
+fit.lda <- train(diabetes~., data=PimaIndiansDiabetes, method="lda", metric="Accuracy", preProc=c("center", "scale"), trControl=control)
+print(fit.lda)
+
+# Random Forest
+set.seed(7)
+fit.rf <- train(diabetes~., data=PimaIndiansDiabetes, method="rf", metric="Accuracy", trControl=control)
+print(fit.rf)
+
+# Naive Bayes
+set.seed(7)
+fit.nb <- train(diabetes~., data=PimaIndiansDiabetes, method="nb", metric="Accuracy", trControl=control)
+print(fit.nb)
+
+# Logistic Regression
+set.seed(7)
+fit.glm <- train(diabetes~., data=PimaIndiansDiabetes, method="glm", metric="Accuracy", preProc=c("center", "scale"), trControl=control)
+print(fit.glm)
+
+# Tekrar örnekleminin toparlanması
+results <- resamples(list(LDA=fit.lda, SVM=fit.svm, NB=fit.nb, RF=fit.rf, GLM=fit.glm))
+# Farklı modların özeti
+summary(results)
+
+# Farklı modellerin karşılaştırması için box ve whisker grafikleri oluşturma
+scales <- list(x=list(relation="free"), y=list(relation="free")) bwplot(results, scales=scales)
+
+# Doğruluğun nokta grafik halinde gösterimi
+scales <- list(x=list(relation="free"), y=list(relation="free")) dotplot(results, scales=scales)
+
+# İkili tahminleri dağılım grafikleri halinde gösterimi
+splom(results)
+
+# Modellerin karşılıklı olarak gösterimi
+xyplot(results, models=c("LDA", "SVM"))
+xyplot(results, models=c("RF", "GLM"))
+```
+
+Bu aşamada belli algoritmaların veri setimiz için öğrenme işlemini yapmasını sağladık. Farklı algoritmalarda oluşan tahminlerin kontrolünü yapabiliriz.
+
+```ruby
+# Model tahminleri arasındaki farklar
+diffs <- diff(results)
+
+# İkili karşılaştırmaların p değerlerinin özeti
+summary(diffs)
+
+# LDA algoritmasının kontrolü
+predictions_lda <- predict(fit.lda, PimaIndiansDiabetes[,1:8])
+confusionMatrix(predictions_lda, PimaIndiansDiabetes$diabetes)
+
+# SVM algoritmasının kontrolü
+predictions_svm <- predict(fit.svm, PimaIndiansDiabetes[,1:8])
+confusionMatrix(predictions_svm, PimaIndiansDiabetes$diabetes)
+
+# NB algoritmasının kontrolü
+predictions_nb <- predict(fit.nb, PimaIndiansDiabetes[,1:8])
+confusionMatrix(predictions_nb, PimaIndiansDiabetes$diabetes)
+
+# RF algoritmasının kontrolü
+predictions_rf <- predict(fit.rf, PimaIndiansDiabetes[,1:8])
+confusionMatrix(predictions_rf, PimaIndiansDiabetes$diabetes)
+
+# GLM algoritmasının kontrolü
+predictions_glm <- predict(fit.glm, PimaIndiansDiabetes[,1:8])
+confusionMatrix(predictions_glm, PimaIndiansDiabetes$diabetes)
+```
+
+
+```ruby
+#Eğitme planı hazırlamak
+control <- trainControl(method="repeatedcv", number=10, repeats=3)
+```
 
 ## Referanslar
 
