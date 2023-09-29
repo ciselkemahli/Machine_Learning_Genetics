@@ -55,7 +55,7 @@ R programlama dili kullanılarak makine öğrenmesi uygulamak mümkündür. Bunu
 
 Kullanacağımız R kütüphanelerini öncelikle yüklememiz gerekmektedir.
 
-```ruby
+```R
 library(caret)
 library(mlbench)
 library(randomForest)
@@ -79,7 +79,7 @@ Pima Kızılderelileri
 
 Veri setini yükleme
 
-```ruby
+```R
 data(PimaIndiansDiabetes)
 ```
 
@@ -87,7 +87,7 @@ data(PimaIndiansDiabetes)
 
 Öncelikle datamızın içeriğini inceleyelim.
 
-```ruby
+```R
 head(PimaIndiansDiabetes)
 summary(PimaIndiansDiabetes)
 ```
@@ -96,19 +96,19 @@ Bu çalışmada amacımız bu veri setindeki değişkenlikleri kullanarak kişin
 
 Her bir özellik için boxplot oluşturalım.
 
-```ruby
+```R
 par(mfrow=c(2,4)) for(i in 1:8) {
 boxplot(PimaIndiansDiabetes[,i], main=names(PimaIndiansDiabetes)[i]) }
 ```
 Her bir özelliğin bulunma sıklığına bakabiliriz.
 
-```ruby
+```R
 par(mfrow=c(2,4)) for(i in 1:8) {
 plot(density(PimaIndiansDiabetes[,i]), main=names(PimaIndiansDiabetes)[i]) }
 ```
 corrplot kütüphanesini kullanarak özellikler arasındaki korelasyona bakabiliriz.
 
-```ruby
+```R
 #par(mfrow=c(1,1))
 library(corrplot)
 # Korelasyonun hesaplanması
@@ -135,7 +135,7 @@ Regresyon:
 - RMSE: Ortalama hatanın karekökü (root mean squared error). Yine, anlaşılması kolay ve yaygın olarak kullanılıyor.
 - Rsquared: uyumun iyiliği veya belirleme katsayısı (the goodness of fit or coefficient of determination).
 
-```ruby
+```R
 #Eğitme planı hazırlamak
 control <- trainControl(method="repeatedcv", number=10, repeats=3)
 ```
@@ -144,7 +144,7 @@ Aslında burada ne kadar çok tekrar yapabilirsek elde ettiğimiz değerlendirme
 
 Şimdi farklı modelleri deneyebiliriz.
 
-```ruby
+```R
 # SVM
 set.seed(7)
 fit.svm <- train(diabetes~., data=PimaIndiansDiabetes, method="svmRadial", metric="Accuracy", trControl=control)
@@ -191,7 +191,7 @@ xyplot(results, models=c("RF", "GLM"))
 
 Bu aşamada belli algoritmaların veri setimiz için öğrenme işlemini yapmasını sağladık. Farklı algoritmalarda oluşan tahminlerin kontrolünü yapabiliriz.
 
-```ruby
+```R
 # Model tahminleri arasındaki farklar
 diffs <- diff(results)
 
@@ -231,7 +231,7 @@ R’deki randomForest() işlevi için doğrudan yardım sayfasından:
 
 mtry: Her bölmede aday olarak rastgele örneklenen değişken sayısı. ntree: Büyüyecek ağaç sayısı.
 
-```ruby
+```R
 # Veri seti test ve train olmak üzere rastgele doğrulama kümelerine böleceğiz.
 set.seed(7)
 split <- createDataPartition(y=PimaIndiansDiabetes$diabetes, p=0.66, list=FALSE)
@@ -270,7 +270,7 @@ dotplot(results)
    
 Rastgele orman algoritmasını kullanarak en iyi parametreleri belirledik.
 
-```ruby
+```R
 # En iyi parametreler:
 chosenNTree <- 2500 chosenmtry <- bestmtry$mtry
 
@@ -281,13 +281,13 @@ print(rf_pima)
 
 Ortalama azalma doğruluğu (Mean decrease accuracy), her parametrenin olmadan modelin performansının ölçüsüdür. Daha yüksek bir değer, grubu (diyabetik ve sağlıklı) tahmin etmede o parametrenin önemini gösterir. Bu parametrenin çıkarılması, modelin tahmindeki doğruluğunu kaybetmesine neden olur.
 
-```ruby
+```R
 importance(rf_pima, type=1)
 ```
 
 Görüldüğü üzere glikoz değeri diyabet hastası olma durumunun sınıflandırılmasında en yüksek öneme sahip parametre olarak bulunmuştur, ki bu da bekleyebildiğimiz bir sonuç olacaktır.
 
-```ruby
+```R
 predictions <- predict(rf_pima, newdata = testPima[,1:8])
 confusionMatrix(predictions, testPima$diabetes)
 
